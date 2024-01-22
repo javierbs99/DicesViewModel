@@ -1,5 +1,6 @@
 package com.mpd.pmdm.dicerollerconstraintlayout
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,10 +21,16 @@ class TwoDicesViewModel(numSides: Int): ViewModel() {
     private val _caraDado2 = MutableLiveData<Int>(dice2.roll())
     val caraDado2: LiveData<Int> = _caraDado2
 
+    init{
+        Log.d("TwoDicesViewModel", "Creado ViewModel con $numSides caras")
+    }
+
     fun rollDices(){
         _caraDado1.value = dice1.roll()
         _caraDado2.value = dice2.roll()
     }
+
+
 }
 //Clase que implementa ViewModelProvider.Factory para permitirnos
 //crear instancias de ViewModel con parámetros iniciales
