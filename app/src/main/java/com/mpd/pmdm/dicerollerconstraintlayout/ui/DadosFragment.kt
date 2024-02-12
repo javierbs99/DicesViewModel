@@ -1,4 +1,4 @@
-package com.mpd.pmdm.dicerollerconstraintlayout
+package com.mpd.pmdm.dicerollerconstraintlayout.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
+import com.mpd.pmdm.dicerollerconstraintlayout.R
 import com.mpd.pmdm.dicerollerconstraintlayout.databinding.FragmentDadosBinding
+import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.TwoDicesViewModel
+import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.TwoDicesViewModelFactory
 
 class DadosFragment : Fragment() {
     private var _binding: FragmentDadosBinding? = null

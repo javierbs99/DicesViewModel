@@ -1,13 +1,20 @@
-package com.mpd.pmdm.dicerollerconstraintlayout
+package com.mpd.pmdm.dicerollerconstraintlayout.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
+import com.mpd.pmdm.dicerollerconstraintlayout.core.LanzamientoApp
+import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.TwoDicesViewModel
+import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.TwoDicesViewModelFactory
 import com.mpd.pmdm.dicerollerconstraintlayout.databinding.FragmentBotonBinding
-import com.mpd.pmdm.dicerollerconstraintlayout.databinding.FragmentDadosBinding
+import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.LanzamientosViewModel
+import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.LanzamientosViewModelFactory
+import java.time.LocalDateTime
 
 
 class BotonFragment : Fragment() {
@@ -16,6 +23,9 @@ class BotonFragment : Fragment() {
 
     private val dices: TwoDicesViewModel by activityViewModels {
         TwoDicesViewModelFactory(6)
+    }
+    private val lanzamientosViewModel: LanzamientosViewModel by activityViewModels{
+        LanzamientosViewModelFactory((activity?.application as LanzamientoApp).appRepository)
     }
 
     override fun onCreateView(
@@ -27,10 +37,18 @@ class BotonFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnRoll.setOnClickListener {
             dices.rollDices()
+            crearHistorico()
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun crearHistorico(){
+        val fecha = LocalDateTime.now().toString()
+        lanzamientosViewModel.insert(fecha, dices.caraDado1.value?.toByte() ?: 0, dices.caraDado2.value?.toByte() ?: 0)
     }
 }
