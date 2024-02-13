@@ -3,18 +3,33 @@ package com.mpd.pmdm.dicerollerconstraintlayout.ui
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mpd.pmdm.dicerollerconstraintlayout.data.database.Lanzamiento
 
 import com.mpd.pmdm.dicerollerconstraintlayout.databinding.FragmentItemBinding
 
-class LanzamientosRecyclerViewAdapter(
-    private var lanzamientosList: List<Lanzamiento> = emptyList()
-) : RecyclerView.Adapter<LanzamientosRecyclerViewAdapter.ViewHolder>()  {
+class LanzamientosRecyclerViewAdapter() :
+    ListAdapter<Lanzamiento, LanzamientosRecyclerViewAdapter.LanzamientoViewHolder>(DiffUtilItemCallback){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    companion object{
+        val DiffUtilItemCallback = object: DiffUtil.ItemCallback<Lanzamiento>(){
+            override fun areItemsTheSame(oldItem: Lanzamiento, newItem: Lanzamiento): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        return ViewHolder(
+            override fun areContentsTheSame(oldItem: Lanzamiento, newItem: Lanzamiento): Boolean {
+                return oldItem == newItem
+            }
+
+
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanzamientoViewHolder {
+
+        return LanzamientoViewHolder(
             FragmentItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -25,14 +40,13 @@ class LanzamientosRecyclerViewAdapter(
     }
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = lanzamientosList[position]
+    override fun onBindViewHolder(holder: LanzamientoViewHolder, position: Int) {
+        val item = getItem(position)
         holder.bind(item)
     }
 
-    override fun getItemCount(): Int = lanzamientosList.size
 
-    inner class ViewHolder(val binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class LanzamientoViewHolder(val binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(lanzamiento: Lanzamiento){
             binding.id.text = lanzamiento.id.toString()
             binding.fecha.text = lanzamiento.fecha.toString()
@@ -41,10 +55,10 @@ class LanzamientosRecyclerViewAdapter(
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    /*@SuppressLint("NotifyDataSetChanged")
     fun updateList(newModulesList: List<Lanzamiento>){
         lanzamientosList = newModulesList
         notifyDataSetChanged()
-    }
+    }*/
 
 }

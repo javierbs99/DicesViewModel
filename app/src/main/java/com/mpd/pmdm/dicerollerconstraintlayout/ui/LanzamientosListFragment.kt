@@ -44,7 +44,7 @@ class LanzamientosListFragment : Fragment() {
         binding.list.adapter = adapter
 
         viewModel.allLanzamientos.observe(viewLifecycleOwner) {
-            adapter.updateList(it)
+            adapter.submitList(it)
         }
     }
 
