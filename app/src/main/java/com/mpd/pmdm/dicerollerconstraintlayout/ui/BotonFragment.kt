@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mpd.pmdm.dicerollerconstraintlayout.core.LanzamientoApp
 import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.TwoDicesViewModel
 import com.mpd.pmdm.dicerollerconstraintlayout.ui.viewmodel.TwoDicesViewModelFactory
@@ -43,6 +44,22 @@ class BotonFragment : Fragment() {
         binding.btnRoll.setOnClickListener {
             dices.rollDices()
             crearHistorico()
+        }
+
+        binding.btnClearList.setOnClickListener {
+            //Creamos un cuadro de diálogo para confirmar la operación
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Confirmación")
+                .setMessage("Deseas borrar todos los lanzamientos?\n" +
+                        "    La operación es irreversible")
+                .setNegativeButton("Cancelar"){
+                        dialog,_ -> dialog.cancel()
+                }
+                .setPositiveButton("Confirmar"){
+                        _,_ -> lanzamientosViewModel.clearAll()
+                }
+                .setCancelable(false)
+                .show()
         }
     }
 
